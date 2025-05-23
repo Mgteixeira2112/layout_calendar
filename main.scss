@@ -1,0 +1,62 @@
+// src/styles/main.scss
+
+$day-size: 100px;
+$border-size: 1px;
+$day-color: #eee;
+$highlight-color: #FFBFCB;
+$font-size: 30px;
+$animation-duration: 0.5s;
+$spacing: 1px;
+$padding: 10px;
+$columns: 7;
+
+.calendar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: calc(#{$columns} * (#{$day-size} + #{$spacing}));
+  padding: $padding;
+  margin: auto;
+
+  @for $i from 1 through 31 {
+    .day:nth-child(#{$i})::before {
+      content: "#{$i}";
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      font-size: $font-size;
+    }
+  }
+
+  @each $start in mon, tue, wed, thu, fri, sat, sun {
+    &.start-day-#{$start} .day:first-child {
+      margin-left: calc(index(mon, $start) * ($day-size + $spacing));
+    }
+  }
+
+  @for $length from 28 through 31 {
+    &.month-length-#{$length} .day:nth-child(n+#{$length + 1}) {
+      display: none;
+    }
+  }
+}
+
+.day {
+  width: $day-size;
+  height: $day-size;
+  background-color: $day-color;
+  border: $border-size solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transition: transform $animation-duration, background-color $animation-duration;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $highlight-color;
+    transform: translateY(-20px);
+  }
+}
